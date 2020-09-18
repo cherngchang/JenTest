@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+    environment {
+        developmentServer = 'dev-myproject.mycompany.com'
+        stagingServer = 'staging-myproject.mycompany.com'
+        productionServer = 'production-myproject.mycompany.com'
+        developmentPort = '8080'
+        stagingPort = '8443'
+        productionPort = '80'
+    }
+    stages {
+        stage('deploy development'){
+            steps {
+                deploy(developmentServer, developmentPort)
+            }
+        }
+        
+        stage('deploy staging'){
+            steps {
+                deploy(stagingServer, stagingPort)
+            }
+        }
+
+        stage('deploy production'){
+            steps {
+                deploy(productionServer, productionPort)
+            }
+        }
+    }
+        
+}
