@@ -112,7 +112,8 @@ appConfigs.each { config ->
       description("This top level folder is meant to separate pipeline hobs on a per appliation basis. Pipeline job should ot be added at this level")
       properties {
         envVarsFolderProperty {
-          properties("GSI=${app['gsi']}")
+          //properties("GSI=${app['gsi']}")
+          properties("GSI=abc123")
         }  
       }
       configure { project ->
