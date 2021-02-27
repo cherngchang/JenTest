@@ -96,7 +96,57 @@ appConfigs.each { config ->
     out.println("topLevelFolder = " + topLevelFolder)
     out.println("repoFolder = " + repoFolder)
 
+    //get the existing credentials if any
+    String FOLDER_CREDENTIALS_PROPERTY_NAME = 'com.cloudbees.hudson.plugins.folder.properties.FolderCredentialsProvider$FolderCredentialsProperty' 
+    Node folderCredentialsPropertyNode
+    Item buildFolder = jenkins.getItem(topLevelFolder)
+    if (buildFolder) {
+      def folderCredentialsProperty = buildFolder.getProperties().getDynamic(FOLDER_CREDENTIALS_PROPERTY_NAME)  
+      if (folderCredentialsProperty) {
+        String xml = Items.XSTREAM2.toXML(folderCredentialsProperty)
+        folderCredentialsPropertyNode = new XmlParser().parseText(xml)
+      }
+    }
 
+    folder("${topLevelFolder}") {
+      description("This top level folder is meant to separate pipeline hobs on a per appliation basis. Pipeline job should ot be added at this level")
+      properties {
+        envVarsFolderProperty {
+          properties("GSI=${app['gsi']}")
+        }  
+      }
+      configure { project ->
+        def groups = project / 'properties' / 'com.cloudbees.hudson.plugins.folder.properties.FolderProxyGroupContainer'(plugin:'nectar-rbac@5.23') / groups { 'nectar.plugins.rbac.groups.Group' }
+        def readGroup = [name('reader'), role(propagateToChildren:"false", 'read')]
+        for (m in yaml['roles']['readers']) {
+          readGroup << member("${m}")
+        }
+        groups.appendNode('nectar.plugins.rbac.groups.Group', readGroup)
+        //reset the captured credentials
+        if (folderCredentialsPropertyNode) {
+          project / 'properties' << folderCredentialsPropertyNode
+        }
+      }
+    }
+
+    folder("${repoFolder}") {
+      description("The pipeline jobs in this folder is owned and managed by the CI/CD platform team. Authorized users may execute the jobs but will not be able to edit them. Please contact the CI/CD platform team for assistance.")
+      configure { project ->
+        def groups = project / 'properties' / 'com.cloudbees.hudson.plugins.folder.properties.FolderProxyGroupContainer'(plugin:'nectar-rbac@5.23') / groups { 'nectar.plugins.rbac.groups.Group' }
+        def readGroup = [name('reader'), role(propagateToChildren:"true", 'read')]
+        for (m in yaml['roles']['readers']) {
+          readGroup << member("${m}")
+        }
+        groups.appendNode('nectar.plugins.rbac.groups.Group', readGroup)
+        // Build out the list of authorized cloud for this folder
+        def clouds = project / 'properties' / 'org.csanchez.jenkins.plugins.kubernetes.KubernetesFolderProperty'(plugin:'kubernetes@1.13.7') / permittedClouds {}
+        for (n in [platform['jenkins']['pipeline-namespaces']]) {
+          for (item in n) {
+            clouds.appendNode("string", item)
+          }
+        }
+      }
+    }
 
   }
 }
