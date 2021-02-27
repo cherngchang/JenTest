@@ -1,4 +1,4 @@
-@GrabResolver(name='jenkins', root='http://repo.jenkins-ci.org/public/')
+//@GrabResolver(name='jenkins', root='http://repo.jenkins-ci.org/public/')
 @Grapes([
   @Grap('org.yaml:snakeyaml:1.18'),
   @Grap('org.jenkins-ci.plugins:cloudbees-folder:6.14'),
