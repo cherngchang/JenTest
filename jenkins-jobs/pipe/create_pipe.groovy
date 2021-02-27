@@ -13,7 +13,7 @@ import hudson.model.Items
 
 jenkins = Jenkins.instance
 
-hudson.FilePath workspace = hudson.model.Executor.currentExecutor.getCurrentWorkspace()
+hudson.FilePath workspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace()
 
 def platform = new Yaml().load(readFileFromWorkspace("jenkins-jobs/pipe/platform.yaml"))
 def CONF_FILE = 'none.yaml'
