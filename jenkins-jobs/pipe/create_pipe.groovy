@@ -110,12 +110,11 @@ appConfigs.each { config ->
 
     folder("${topLevelFolder}") {
       description("This top level folder is meant to separate pipeline hobs on a per appliation basis. Pipeline job should ot be added at this level")
-      properties {
+      /*properties {
         envVarsFolderProperty {
-          //properties("GSI=${app['gsi']}")
-          properties("GSI=abc123")
+          properties("GSI=${app['gsi']}")
         }  
-      }
+      }*/
       configure { project ->
         def groups = project / 'properties' / 'com.cloudbees.hudson.plugins.folder.properties.FolderProxyGroupContainer'(plugin:'nectar-rbac@5.23') / groups { 'nectar.plugins.rbac.groups.Group' }
         def readGroup = [name('reader'), role(propagateToChildren:"false", 'read')]
