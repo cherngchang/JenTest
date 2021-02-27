@@ -1,0 +1,23 @@
+---
+jenkins:
+  openshift-cluster: oc-dev-cluster
+  pipeline-repo-url: https://bbk.example.com/jenkins.git
+  pipeline-intake-repo-url: https://bbk.example.com/pipeline_intake.git
+  pipeline-namespaces:
+  - oc-dev
+  - oc-uat
+  - oc-sit
+  - oc-prd
+bitbucket:
+  credential-id: bitbucket
+  protocol: https
+  hostname: bbk.example.com
+
+hosting-platforms:
+  none:
+    pipelines:
+      api-promotion:
+        release:
+          script-path: "jenkins-jobs/src/jobs/SimpleDSLJob.groovy"
+          job-descriptions: "release pipeline for api promotion."
+

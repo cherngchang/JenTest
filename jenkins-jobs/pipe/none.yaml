@@ -1,0 +1,24 @@
+---
+gsi-code: eip
+apps:
+  - bitbucket-project: csip_eip
+    repo: api-promotion-automation-service
+    type: api-promotion
+    cicd: true
+    target-hosting-platform: none
+  - bitbucket-project: csip_eip
+    repo: api-promotion-automation-service-wso
+    type: api-promotion
+    cicd: true
+    target-hosting-platform: none
+  - bitbucket-project: csip_eip
+    repo: api-promotion-wso
+    type: api-promotion
+    cicd: true
+    target-hosting-platform: none
+
+roles:
+  readers:
+    - eip_reader
+  builders:
+    - eip_builder
