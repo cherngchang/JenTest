@@ -36,10 +36,10 @@ appConfigs.each { config ->
           project = [
               cluster: "on-prem-dev",
               project: app['gsi'] + "-dev",
-              environment: dev 
+              environment: 'dev' 
           ]
           app['openshift'] = [ projects: [project] ]
-          out.println("No openshift hash found in config - add default - ${app['openshift]}")
+          out.println("No openshift hash found in config - add default - ${app['openshift']}")
         }
         break;
       case ~/.*puppet$/:
@@ -97,6 +97,6 @@ appConfigs.each { config ->
     out.println("repoFolder = " + repoFolder)
 
 
-    
+
   }
 }
