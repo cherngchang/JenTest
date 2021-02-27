@@ -1,8 +1,8 @@
 @GrabResolver(name='jenkins', root='http://repo.jenkins-ci.org/public/')
 @Grapes([
-  @Grap('org.yaml:snakeyaml:1.18'),
-  @Grap('org.jenkins-ci.plugins:cloudbees-folder:6.14'),
-  @Grap('org.jenkins-ci.plugins:credentials:2.3.12')
+  @Grab('org.yaml:snakeyaml:1.18'),
+  @Grab('org.jenkins-ci.plugins:cloudbees-folder:6.14'),
+  @Grab('org.jenkins-ci.plugins:credentials:2.3.12')
 ])
 import org.yaml.snakeyaml.Yaml
 import jenkins.model.*
